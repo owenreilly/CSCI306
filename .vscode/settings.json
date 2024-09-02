@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "sep2.C": "cpp"
+    },
+    "code-runner.executorMap": {
+        "c": "mkdir -p cFiles && gcc \"$fullFileName\" -o \"cFiles/$fileNameWithoutExt\" && ./cFiles/$fileNameWithoutExt"
+    },
+    "code-runner.runInTerminal": true
+}

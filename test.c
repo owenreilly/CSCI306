@@ -1,132 +1,144 @@
 
 #include <stdio.h>
-#include <string.h>
+#include <stdbool.h>
+#include <math.h> // For math functions like sqrt, cbrt
+#include <string.h> // For strlen
 
+// Function Prototypes
+float square_root1(float x); // Using a do-while loop
+float square_root2(float x); // Using a for loop
+float cube_root(float x); // Returns the cube root of a given number
+bool compare_strings(const char str1[], const char str2[]); // Compares two strings without using strcmp
+bool is_palindrome(const char str[]); // Checks if a string is a palindrome
 
-int main() {
-    // **Challenge 1: Monitoring Environmental Data**
+int main(void) {
+    // Variables for testing
+    float test_value1 = 2.0, test_value2 = 3.0;
+    char test_str1[] = "test", test_str2[] = "test";
+    char test_str3[] = "notpalindrome", test_str4[] = "racecar";
 
-    // TODO: Declare variables for temperature, oxygen level, greenhouse pressure, and humidity.
-    // Example: int temperature;
-    // Choose appropriate data types based on the range of values needed.
-    
-    int temperature;
-    float oxygenLevel;
-    int greenhousePressure;
-    float humidity;
+    // Test square_root1 (do-while loop)
+    float result1 = square_root1(test_value1);
+    if (fabs(result1 - 1.414) < 0.001) { // Expected sqrt(2) is approximately 1.414
+        printf("square_root1 test with 2.0: Passed\n");
+    } else {
+        printf("square_root1 test with 2.0: Failed\n");
+    }
 
-    // TODO: Use scanf to gather input from the user for these environmental variables.
-    // Example: printf("Enter the current temperature (°C): ");
-    // scanf("%d", &temperature);
-    
-    printf("Enter the current temperature (°C): "); 
-    scanf("%d", &temperature);
-    printf("Enter the current oxygen level: ");
-    scanf("%f", &oxygenLevel);
-    printf("Enter the current greenhouse pressure (psi): ");
-    scanf("%d", &greenhousePressure);
-    printf("Enter the current humidity: ");
-    scanf("%f", &humidity);
-    
-    
-    // TODO: Use printf to display the values entered by the user.
-    // Example: printf("Temperature: %d°C\n", temperature);
+    // Test square_root2 (for loop)
+    float result2 = square_root2(test_value2);
+    if (fabs(result2 - 1.732) < 0.001) { // Expected sqrt(3) is approximately 1.732
+        printf("square_root2 test with 3.0: Passed\n");
+    } else {
+        printf("square_root2 test with 3.0: Failed\n");
+    }
 
-    printf("Temperature: %d°C\n", temperature);
-    printf("Oxygen Level: %.2f\n", oxygenLevel);
-    printf("Greenhouse Pressure: %d\n", greenhousePressure);
-    printf("Humidity: %.2f\n", humidity);
-    
-    // **Challenge 2: Water Quality Control**
+    // Test cube_root
+    float cube_result = cube_root(8.0); // The cube root of 8.0 is 2.0
+    if (fabs(cube_result - 2.0) < 0.001) {
+        printf("cube_root test with 8.0: Passed\n");
+    } else {
+        printf("cube_root test with 8.0: Failed\n");
+    }
 
-    // TODO: Declare variables for pH level, contamination level, and water temperature.
-    // Example: float pH_level;
+    // Another cube root test
+    cube_result = cube_root(27.0); // The cube root of 27.0 is 3.0
+    if (fabs(cube_result - 3.0) < 0.001) {
+        printf("cube_root test with 27.0: Passed\n");
+    } else {
+        printf("cube_root test with 27.0: Failed\n");
+    }
 
-    float pH_level;
-    float contamination_level;
-    int water_temperature;
-    
-    // TODO: Use scanf to take input from the user for each variable.
-    // Example: printf("Enter pH level: ");
-    // scanf("%f", &pH_level);
+    // Test compare_strings
+    bool compare_result1 = compare_strings(test_str1, test_str2); // Both are "test"
+    if (compare_result1) {
+        printf("compare_strings test with \"test\" and \"test\": Passed\n");
+    } else {
+        printf("compare_strings test with \"test\" and \"test\": Failed\n");
+    }
 
-    printf("Enter pH level: ");
-    scanf("%f", &pH_level);
-    printf("Enter contamination level: ");
-    scanf("%f", &contamination_level);
-    printf("Enter water temperature: ");
-    scanf("%d", &water_temperature);
-    
-    // TODO: Use printf to display the values entered by the user.
-    // Example: printf("pH Level: %.2f\n", pH_level);
+    bool compare_result2 = compare_strings(test_str1, test_str3); // "test" and "notpalindrome" are different
+    if (!compare_result2) {
+        printf("compare_strings test with \"test\" and \"notpalindrome\": Passed\n");
+    } else {
+        printf("compare_strings test with \"test\" and \"notpalindrome\": Failed\n");
+    }
 
-    printf("pH Level: %.2f\n", pH_level);
-    printf("Contamination Level: %.2f\n", contamination_level);
-    printf("Water Temperature: %d°\n", water_temperature);
+    // Test is_palindrome
+    bool palindrome_result1 = is_palindrome(test_str4); // "racecar" is a palindrome
+    if (palindrome_result1) {
+        printf("is_palindrome test with \"racecar\": Passed\n");
+    } else {
+        printf("is_palindrome test with \"racecar\": Failed\n");
+    }
 
-    
-    // **Challenge 3: Recording Crew Member Details**
+    bool palindrome_result2 = is_palindrome(test_str3); // "notpalindrome" is not a palindrome
+    if (!palindrome_result2) {
+        printf("is_palindrome test with \"notpalindrome\": Passed\n");
+    } else {
+        printf("is_palindrome test with \"notpalindrome\": Failed\n");
+    }
 
-    // TODO: Declare variables for name, age, initial, and height.
-    // Example: char name[50];
-
-    char name[50];
-    int age;
-    char initial;
-    int height;
-    
-    // TODO: Use scanf and getchar to take input for each variable.
-    // Example: printf("Enter your name: ");
-    // scanf("%s", name);
-
-    printf("Enter your name: ");
-    scanf("%s", name);
-    printf("Enter your age: ");
-    scanf("%d", &age);
-    printf("Enter your initial: ");
-    scanf("%c", &initial);
-    printf("Enter your height (inches) : ");
-    scanf("%d", &height);
-    
-    // TODO: Use printf and putchar to display the recorded information.
-    // Example: printf("Name: %s\n", name);
-
-    printf("Name: %s\n", name);
-    printf("Age: %d years\n", age);
-    printf("Initial: %c\n", initial);
-    printf("Height: %d' meters\n", height);
-
-    
-    // **Challenge 4: Interactive Console for Engineers**
-
-    // TODO: Create prompts for updating and viewing data.
-    // Example: printf("Enter the current temperature (°C): ");
-
-
-    printf("--- Crew Member Details ---\n");
-    printf("Name: %s\n", name);
-    printf("Age: %d years\n", age);
-    printf("Initial: %c\n", initial);
-    printf("Height: %d inches\n\n\n", height);
-
-    printf("--- Mars Colony System Console ---\n");
-    printf("Current Enviornmental Data:\n");
-    printf("Temperature: %d°C\n", temperature);
-    printf("Oxygen Level: %.2f\n", oxygenLevel);
-    printf("Greenhouse Pressure: %d\n", greenhousePressure);
-    printf("GreenhouseHumidity: %.2f\n", humidity);
-    printf("\n");
-    printf("Current Water Quality Data:\n");
-    printf("pH Level: %.2f\n", pH_level);
-    printf("Contamination Level: %.2f\n", contamination_level);
-    printf("Water Temperature: %d°\n", water_temperature);
-   
-
-    // TODO: Use scanf to gather input from the user and printf to display the results.
-    // Example: scanf("%d", &temperature);
-    // printf("Temperature: %d°C\n", temperature);
-    
     return 0;
 }
 
+// Function Definitions
 
+// Using a do-while loop
+float square_root1(float number) {
+    float guess = number / 2.0;
+    const float epsilon = 0.0001;
+    
+    do {
+        guess = (guess + number / guess) / 2.0;
+    } while (fabs(guess * guess - number) > epsilon);
+    
+    return guess;
+}
+
+// Using a for loop
+float square_root2(float number) {
+    float guess = number / 2.0;
+    const float epsilon = 0.0001;
+    
+    for (; fabs(guess * guess - number) > epsilon;) {
+        guess = (guess + number / guess) / 2.0;
+    }
+    
+    return guess;
+}
+
+float cube_root(float x) {
+    float guess = x / 3.0f; 
+    const float epsilon = 0.00001;
+    
+    while (fabs(guess * guess * guess - x) > epsilon) {
+        guess = (2.0f * guess + x / (guess * guess)) / 3.0f;
+    }
+    
+    return guess;
+}
+
+bool compare_strings(const char str1[], const char str2[]) {
+    int i = 0;
+    while (str1[i] != '\0' && str2[i] != '\0') {
+        if (str1[i] != str2[i]) {
+            return false;
+        }
+        i++;
+    }
+    return str1[i] == '\0' && str2[i] == '\0';
+}
+
+bool is_palindrome(const char str[]) {
+    int left = 0;
+    int right = strlen(str) - 1;
+    while (left < right) {
+        if (str[left] != str[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}

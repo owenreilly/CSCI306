@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/owenreilly/Desktop/Code/Bucknell/CSCI306/test'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000035B4, symSize: 0x320 }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000035B4, symSize: 0x320 }
+  - { offsetInCU: 0x111, offset: 0x111, size: 0x8, addend: 0x0, symName: _square_root1, symObjAddr: 0x320, symBinAddr: 0x1000038D4, symSize: 0x9C }
+  - { offsetInCU: 0x155, offset: 0x155, size: 0x8, addend: 0x0, symName: _square_root2, symObjAddr: 0x3BC, symBinAddr: 0x100003970, symSize: 0x9C }
+  - { offsetInCU: 0x199, offset: 0x199, size: 0x8, addend: 0x0, symName: _cube_root, symObjAddr: 0x458, symBinAddr: 0x100003A0C, symSize: 0xA0 }
+  - { offsetInCU: 0x1DD, offset: 0x1DD, size: 0x8, addend: 0x0, symName: _compare_strings, symObjAddr: 0x4F8, symBinAddr: 0x100003AAC, symSize: 0x110 }
+  - { offsetInCU: 0x221, offset: 0x221, size: 0x8, addend: 0x0, symName: _is_palindrome, symObjAddr: 0x608, symBinAddr: 0x100003BBC, symSize: 0xC0 }
+...
