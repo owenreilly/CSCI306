@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -192,3 +193,4 @@ int main() {
     printf("Congratulations, brave explorer! You have completed all stages and found the hidden treasure.\n");
     return 0;
 }
+    
