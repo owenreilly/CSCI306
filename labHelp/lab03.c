@@ -1,148 +1,222 @@
-/*
-  * File name: fsm.c
-  * Compile with: gcc -std=c99 fsm.c -o fsm
-  *
-  * This file contains a few finite state machines that recognize various
-  * patterns.
-  *
-  * CSCI 306 exercises (student file)
-  */
- #include <stdio.h>
- #include <stdbool.h>   // bool type
- #include <stdlib.h>    // exit()
- #include <string.h>
+  //Owen Reilly
+  // Section 60 
+  // Lab 03
+  //
+  //
  
- enum NUM_STATE {NON_DIGIT, DIGIT};  // states for a number
- enum ALPHA_NUM_STATE {ALPHA_NUM, NON_ALPHA_NUM};
- 
- 
- int const MAX_LENGTH = 16;   // max length of a int
- 
- 
- bool my_isdigit(char);       // returns true if char is a digit, false otherwise
- bool my_isalpha(char);         // returns true if char is alpha, false if not
- void parse_int(char *);      // parse int out of a string
- 
- void parse_word(char *);    // parse out the word
- 
- int  grow_number(char *, char, int);   // increase the int by a digit
- void end_number(char *, int);          // end of an int
- 
- int main(int argc, char *argv[]) {
- 
-   if (argc != 2) {
-    fprintf(stderr, "Usage: %s string\n", argv[0]);
-     exit(1);
-   }
- 
-   parse_word(argv[1]);
-   //parse_word('h0w5 7h3 w347h32?');
- 
-   return 0;
- }
- 
- bool my_isdigit(char c) {
- 
-   if (c >= '0' && c <= '9')
-     return true;
-   else
-     return false;
- }
- 
-  bool my_isalpha(char c) {
-      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-          return true;
-      }
-      else if (my_isdigit(c)) {
-          return true;
-      }
-      return false;
- 
-  }
 
+#include <stdio.h>
+#include <stdlib.h>
 
+#define MAXLINES 100
+#define MAXBYTE 255
 
- void parse_word(char * s) {
- 
-    enum ALPHA_NUM_STATE state = NON_ALPHA_NUM   ;
-    int  len = strlen(s);
-    char one_number[MAX_LENGTH+1]; // used to store one integer
-    int word_count=0;          // how many words in current int
- 
-    for (int i = 0; i < len; ++i) {
-      if (state == NON_ALPHA_NUM) {
-        if ((my_isalpha(s[i])) || (my_isdigit(s[i]))) {
-          state = ALPHA_NUM;
-          word_count = grow_number(one_number, s[i], word_count);
-        }
-      } else if (state == ALPHA_NUM) {
-        if ((my_isalpha(s[i]) == true) || (my_isdigit(s[i] == true))) {
-          word_count = grow_number(one_number, s[i], word_count);
-        } else { // end of a number
-          end_number(one_number, word_count);
-          word_count = 0;              // ready to start a new number
-          state = NON_ALPHA_NUM;
-        }
-      } else {
-        printf("error, non-existing state.\n");
-      }
-    } // end of for
-    if (word_count > 0) { // the very last token is int
-      one_number[word_count] = 0;  // terminate the string
-      printf("one token : [%s]\n", one_number);
+// Function to read lines from a file into a buffer
+int read_file_lines(FILE *fp, char buffer[MAXLINES][MAXBYTE + 1], int lines_expected) {
+    int lines_read = 0; 
+
+    while (lines_read < lines_expected && fgets(buffer[lines_read], MAXBYTE + 1, fp) != NULL) {
+        lines_read++;  
     }
-  }
 
-  void parse_int(char * s) {
+    return lines_read; // Return the actual number of lines read
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2 || argc > 3) {
+        perror("Error: Incorrect number of arguments.\n");
+        return 1;
+    }
+
+    // Get the filename from the arguments
+    char *filename = argv[1];
+
+    // Set the default number of lines to read
+    int num_lines = 10;
+
+    // If a second argument is provided, set num_lines to that value
+    if (argc == 3) {
+        num_lines = atoi(argv[2]);
+        if (num_lines <= 0) {
+            perror("Error: Invalid number of lines.\n");
+            return 1;
+        }
+    }
+
+    // Open the file
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("fopen failed");
+        return 1;
+    }
+
+    // Declare the buffer to store lines, read the lines, close the file
+    char buffer[MAXLINES][MAXBYTE + 1]; // 2-D array to store lines from the file
+
+    int lines_read = read_file_lines(file, buffer, num_lines);
+
+    fclose(file);
+
+    // Print the actual number of lines read
+    printf("Number of lines read: %d\n", lines_read);
+
+    // Print each line that was read
+    for (int i = 0; i < lines_read; i++) {
+        printf("%s", buffer[i]);
+    }
+
+    return 0;
+}
  
-   enum NUM_STATE state = NON_DIGIT;
-   int  len = strlen(s);
-   char one_number[MAX_LENGTH+1]; // used to store one integer
-   int  digit_count = 0;          // how many digits in current int
  
-   for (int i = 0; i < len; ++i) {
-     if (state == NON_DIGIT) {
-       if (my_isdigit(s[i]) == true) {
-         state = DIGIT;
-         digit_count = grow_number(one_number, s[i], digit_count);
-       }
-     } else if (state == DIGIT) {
-       if (my_isdigit(s[i]) == true) {
-         digit_count = grow_number(one_number, s[i], digit_count);
-       } else { // end of a number
-         end_number(one_number, digit_count);
-         digit_count = 0;              // ready to start a new number
-         state = NON_DIGIT;
-       }
-     } else {
-       printf("error, non-existing state.\n");
-     }
-   } // end of for
-   if (digit_count > 0) { // the very last token is int
-     one_number[digit_count] = 0;  // terminate the string
-     printf("one token : [%s]\n", one_number);
-   }
- }
+//    #include <stdio.h>
+//    #include <stdlib.h>
+//    #include <stdbool.h>
+//    #include <string.h>
+//    #include <ctype.h>
+ 
+ 
+//    enum intOrString {START, INT, STRING}; // make sure we have valid operands
+ 
+//    // Prototype for checking if the command is valid
+//    bool isvalid(char *s);
+ 
+//    // Prototype for checking if a string is an integer
+//    bool isinteger(char *s);
+ 
+//    void add(int *n, int numInputs);
+//    void mult(int *n, int numInputs);
+//    void divide(int *n, int numInputs);
+//    void len(char *s);
+ 
+ 
+ 
+//    void add(int *n, int numInputs){
+//      if (numInputs == 1){printf("More arguments are needed");}
+//      exit(1);
+//          int sum = 0;
+//       for (int i=0; i<numInputs; i++){
+//           sum += n[i];
+//       }
+//       printf("%d\n",sum);
+//    }
+
+
+// void mult(int *n, int numInputs){
+//      if (numInputs == 1){printf("More arguments are needed");}
+//      exit(1);
+//      int product = 1;
+//      for (int i=0; i<numInputs; i++){
+//          product *= n[i];
+//      }
+//      printf("%d\n",product);
+//    }
+ 
+//     void divide(int *n, int numInputs){
+//      if (numInputs == 1){printf("More arguments are needed");}
+//      exit(1);
+//      int quotient = n[0];
+//      for (int i=1; i<numInputs; i++){
+//          if (n[i]==0){
+//              printf("Divide by zero\n");
+//              exit(1);
+//          }
+//          quotient /= n[i];
+//      }
+//      printf("%d\n",quotient);
+//    }
+ 
+//    void len(char *s){
+//      int length = 0;
+//      while (s[length] != '\0'){
+//          length++;
+//      }
+//      printf("%d",length);
+//    }
+
+//    // Main function
+//    int main(int argc, char *argv[]) {
+ 
+//      enum intOrString state = START; // to make sure we have valid operands
+ 
+ 
+//       int myNums[argc-2];
+//       char myStr[0];
+ 
+ 
+//        // Check if there are at least three arguments including the program name
+ 
+//        if (argc < 3) {
+//            printf("Incorrect number of arguments.\n");
+//            exit(1);
+//        }
+ 
+//        // Check if the first argument (command) is valid
+//        if (!isvalid(argv[1])) {
+//            printf("Unsupported function, try: add, mult, div, or len\n");
+//            exit(1);
+//        }
+ 
+//        // Loop through remaining arguments and check if they are integers
+//        for (int i = 2; i < argc; i++) {
+ 
+//            if (isinteger(argv[i])) {
+//              if (state == START || state == INT) {
+//                state = INT;
+//                myNums[i-2]=atoi(argv[i]);
+//            }
+//            else{
+//              printf("Invalid operands\n"); // check the int state
+//              exit(1);
+//            }
+//            }
+//           else {
+//              if (state==START || state==STRING){
+//              state = STRING;
+//              char myStr[strlen(argv[2])];
+//              strcpy(myStr, argv[2]);
+//            }
+//            else{
+//              printf("Invalid operands\n");
+//              exit(1);
+//            }
+//        }
+//        }
+ 
+ 
+//       if (strcmp(argv[1],"add")==0){add(myNums, argc-2);}
+//       else if (strcmp(argv[1],"mult")==0){ mult(myNums, argc-2);}
+//       else if (strcmp(argv[1],"div")==0){divide(myNums, argc-2);}
+//       else if (strcmp(argv[1],"len")==0){len(myStr);}
+  
+//      state = START;
+//      return 0;
+//    }
+
+    
+//    // Function to check if the command is valid
+//    bool isvalid(char *s) {
+//        // Array of valid commands
+//        char *valid_commands[] = {"add", "mult", "div","len"};
+//        for (int i = 0; i < 4; i++) {
+//            if (strcmp(s, valid_commands[i]) == 0) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+ 
+//    // Function to check if a string is an integer
+//    bool isinteger(char *s) {
+//        // Check if each character is a digit
+//        for (int i = 0; s[i] != '\0'; i++) {
+//            if (!isdigit(s[i])) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+ 
+
 
  
- 
- int grow_number(char *token, char ch, int cur_len) {
- 
-   if (cur_len < MAX_LENGTH) {
-     token[cur_len] = ch;
-   } else { // truncate the token
-     token[cur_len] = 0;    // terminate the current one
-     printf("one token : [%s]\n", token);
-     cur_len = 0;              // ready to start a new token
-     token[cur_len] = ch;  // the last char belongs to next int
-   }
-   cur_len ++;
-   return cur_len;
- }
- 
- void end_number(char *token, int cur_len) {
- 
-   token[cur_len] = 0;  // terminte the string
-   printf("one token : [%s]\n", token);
- }
-
